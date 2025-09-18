@@ -1,51 +1,178 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title> Node.Js Application by - Harshit Pandey</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">textarea {
-    font-family: 'Menlo', 'Courier New', 'Courier';
-    width: 100%;
-    margin: 4px 0px 4px 0px;
-    resize: none;
-}</style>
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MealPrep Pro</title>
+  <style>
+    :root{--primary:#5d8bfd;--accent:#ffb347;--dark:#1d1f29;--light:#f7f8fc;--shadow:0 10px 30px rgba(23,32,90,0.12)}
+    *{box-sizing:border-box;margin:0;padding:0;font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    body{background:var(--light);color:var(--dark);line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    header{position:sticky;top:0;z-index:1000;backdrop-filter:blur(14px);background:rgba(247,248,252,0.9);border-bottom:1px solid rgba(93,139,253,0.15)}
+    .nav{max-width:1100px;margin:auto;padding:1rem clamp(1rem,3vw,2rem);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+    .logo{font-weight:700;font-size:1.15rem;letter-spacing:.04em;display:flex;align-items:center;gap:.4rem}
+    .logo span{display:inline-flex;width:32px;height:32px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:10px;align-items:center;justify-content:center;color:#fff;font-size:1rem;font-weight:700}
+    nav ul{list-style:none;display:flex;gap:clamp(.75rem,2vw,1.5rem);font-size:.95rem;font-weight:500}
+    nav a:hover{color:var(--primary)}
+    .cta{padding:.65rem 1.2rem;background:var(--primary);color:#fff;border-radius:999px;font-weight:600;box-shadow:var(--shadow);transition:transform .2s ease;white-space:nowrap}
+    .cta:hover{transform:translateY(-2px)}
+    main{max-width:1100px;margin:auto;padding:clamp(4rem,7vw,6rem) clamp(1rem,3vw,2.5rem);display:grid;gap:clamp(4rem,7vw,6rem)}
+    .hero{display:grid;gap:2rem;align-items:center;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+    .hero-copy h1{font-size:clamp(2.4rem,5vw,3.4rem);font-weight:800;line-height:1.1}
+    .hero-copy p{margin:1.25rem 0 1.75rem;font-size:1.05rem;color:rgba(29,31,41,.78)}
+    .hero-list{list-style:none;display:grid;gap:.75rem}
+    .hero-list li{display:flex;gap:.6rem;align-items:center;font-weight:500}
+    .hero-list span{width:24px;height:24px;border-radius:50%;background:rgba(93,139,253,.15);display:grid;place-items:center;color:var(--primary);font-size:.85rem;font-weight:700}
+    .hero-visual{background:linear-gradient(135deg,rgba(93,139,253,.12),rgba(255,179,71,.16));border-radius:28px;padding:clamp(2rem,4vw,3rem);box-shadow:var(--shadow);display:grid;gap:1.5rem}
+    .hero-visual h2{font-size:1.8rem;font-weight:700}
+    .hero-visual ul{list-style:none;display:grid;gap:.85rem}
+    .hero-visual li{display:flex;justify-content:space-between;font-weight:600}
+    .section-title{text-align:center;display:grid;gap:.75rem}
+    .section-title h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700}
+    .section-title p{color:rgba(29,31,41,.7);max-width:640px;margin:0 auto}
+    .pricing{display:grid;gap:1.5rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+    .plan{background:#fff;border-radius:24px;padding:clamp(2rem,4vw,2.6rem);box-shadow:var(--shadow);display:grid;gap:1.5rem;border:1px solid transparent;transition:transform .2s ease,border .2s ease}
+    .plan.featured{border-color:var(--primary);transform:translateY(-6px)}
+    .plan h3{font-size:1.35rem;font-weight:700}
+    .plan .price{font-size:2.2rem;font-weight:800;color:var(--primary)}
+    .plan .price span{font-size:.9rem;color:rgba(29,31,41,.6);font-weight:500;margin-left:.4rem}
+    .plan ul{list-style:none;display:grid;gap:.7rem;font-size:.95rem;color:rgba(29,31,41,.75)}
+    .plan ul li::before{content:"\2713";color:var(--accent);font-weight:700;margin-right:.5rem}
+    .plan button{padding:.75rem 1rem;border:none;border-radius:12px;background:var(--dark);color:#fff;font-weight:600;cursor:pointer;transition:transform .2s ease,background .2s ease}
+    .plan.featured button{background:linear-gradient(135deg,var(--primary),var(--accent))}
+    .plan button:hover{transform:translateY(-2px);background:var(--primary)}
+    .faq{display:grid;gap:1rem;max-width:780px;margin:0 auto}
+    .faq-item{background:#fff;border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+    .faq-question{width:100%;background:none;border:none;display:flex;justify-content:space-between;align-items:center;font-size:1.05rem;font-weight:600;padding:1.2rem 1.5rem;cursor:pointer}
+    .faq-question span{transition:transform .2s ease;font-size:1.5rem;color:var(--primary)}
+    .faq-answer{max-height:0;overflow:hidden;transition:max-height .3s ease;padding:0 1.5rem;color:rgba(29,31,41,.75)}
+    .faq-answer p{padding-bottom:1.5rem}
+    .faq-item.active .faq-answer{max-height:280px}
+    .faq-item.active .faq-question span{transform:rotate(45deg)}
+    footer{text-align:center;padding:3rem 1rem 4rem;color:rgba(29,31,41,.55);font-size:.9rem}
+    @media(max-width:720px){nav ul{display:none}.nav{justify-content:space-between}}
+  </style>
 </head>
 <body>
-
-<div class="navbar navbar-default navbar-static-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Node.JS builder template by - OyeCode (Harshit Pandey)</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#" id="btn-login">Sample Button</a></li>
-            </ul>
-        </div>
+  <header>
+    <div class="nav">
+      <div class="logo"><span>M</span>MealPrep Pro</div>
+      <nav>
+        <ul>
+          <li><a href="#plans">Plans</a></li>
+          <li><a href="#faq">FAQs</a></li>
+          <li><a href="#cta">Download</a></li>
+        </ul>
+      </nav>
+      <a class="cta" href="#cta">Start Free Trial</a>
     </div>
-</div>
-
-<div class="container">
-    Enter a sample Text in Text Box : <br/>
-    <textarea id="query" rows="4" placeholder="Text Goes here... " autofocus=t"rue"></textarea>
-    <button id="btn-exec" type="submit" class="btn btn-default" onclick="changecolor();"><span class="glyphicon glyphicon-flash"></span> Change Color</button>
-    
-</div>
-
+  </header>
+  <main>
+    <section class="hero" id="cta">
+      <div class="hero-copy">
+        <h1>Prep smarter meals in minutes, every week.</h1>
+        <p>MealPrep Pro builds personalized meal plans that fit your goals, budget, and schedule. Save hours each week and stay nourished effortlessly.</p>
+        <ul class="hero-list">
+          <li><span>✓</span>Adaptive nutrition coaching</li>
+          <li><span>✓</span>Smart grocery lists synced to your pantry</li>
+          <li><span>✓</span>Step-by-step prep day guidance</li>
+        </ul>
+      </div>
+      <div class="hero-visual">
+        <h2>This week’s prep highlights</h2>
+        <ul>
+          <li><span>5 meals</span><span>Ready in 90 mins</span></li>
+          <li><span>2 goals</span><span>Lean muscle + family</span></li>
+          <li><span>$62 avg</span><span>Weekly grocery spend</span></li>
+        </ul>
+        <a class="cta" href="#plans">View plans</a>
+      </div>
+    </section>
+    <section>
+      <div class="section-title" id="plans">
+        <h2>Choose your fueling plan</h2>
+        <p>Whether you’re cooking solo or feeding a family, MealPrep Pro keeps your fridge stocked with balanced meals and your routine on track.</p>
+      </div>
+      <div class="pricing">
+        <article class="plan">
+          <h3>Starter</h3>
+          <div class="price">$9<span>/mo billed monthly</span></div>
+          <ul>
+            <li>Weekly smart meal plans</li>
+            <li>Dynamic grocery list</li>
+            <li>Macro tracking insights</li>
+          </ul>
+          <button>Start Starter</button>
+        </article>
+        <article class="plan featured">
+          <h3>Pro</h3>
+          <div class="price">$15<span>/mo billed monthly</span></div>
+          <ul>
+            <li>Everything in Starter</li>
+            <li>Family & duo planning</li>
+            <li>One-click Instacart export</li>
+            <li>Chef-led prep day videos</li>
+          </ul>
+          <button>Go Pro</button>
+        </article>
+        <article class="plan">
+          <h3>Elite</h3>
+          <div class="price">$24<span>/mo billed yearly</span></div>
+          <ul>
+            <li>Everything in Pro</li>
+            <li>Dietitian coaching calls</li>
+            <li>Advanced performance metrics</li>
+            <li>Team meal planning portal</li>
+          </ul>
+          <button>Join Elite</button>
+        </article>
+      </div>
+    </section>
+    <section>
+      <div class="section-title" id="faq">
+        <h2>Frequently asked questions</h2>
+        <p>Still curious about how MealPrep Pro fits into your life? These answers cover the essentials of getting started and staying consistent.</p>
+      </div>
+      <div class="faq">
+        <div class="faq-item">
+          <button class="faq-question">How does MealPrep Pro personalize my meals?<span>+</span></button>
+          <div class="faq-answer">
+            <p>We tailor plans to your dietary preferences, time available, and health goals. Update your profile anytime and your upcoming weeks adjust automatically.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I swap recipes and ingredients?<span>+</span></button>
+          <div class="faq-answer">
+            <p>Absolutely. Every recipe includes smart swaps with nutritional breakdowns so you can adjust ingredients without losing balance or flavor.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Do you support grocery delivery?<span>+</span></button>
+          <div class="faq-answer">
+            <p>Connect MealPrep Pro with Instacart or Amazon Fresh to auto-fill your cart from your weekly list, or export a shareable checklist for in-store shopping.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">What if I miss a prep day?<span>+</span></button>
+          <div class="faq-answer">
+            <p>Use Quick Catch-Up mode to generate faster recipes and batch-cook guidance so you can get back on track without wasting ingredients.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>© <span id="year"></span> MealPrep Pro. Fuel your week with intention.</footer>
   <script>
-  function changecolor() {
-    var elem = document.getElementById("query");
-    var newcolor =document.getElementById("query").value;
-    elem.style.backgroundColor = newcolor;
-  }
- </script>
+    const questions=document.querySelectorAll('.faq-question');
+    questions.forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const item=btn.parentElement;
+        item.classList.toggle('active');
+        document.querySelectorAll('.faq-item').forEach(other=>{if(other!==item)other.classList.remove('active');});
+      });
+    });
+    document.getElementById('year').textContent=new Date().getFullYear();
+  </script>
 </body>
 </html>
